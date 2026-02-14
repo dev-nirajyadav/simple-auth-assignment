@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+    <script>
+        const login = async () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const res = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({ email, password })
+            })
+
+            const result = await res.json();
+            if(result.success){
+                await localStorage.setItem("token", result.token);
+                window.location.href = "/dashboard.html";
+            } else {
+                document.getElementById("error").innerText = result.message;
+            }
+        }
+    </script>
+    <body>
+        <h2>Login Page</h2>
+        <div>
+            <input type="email" id="email" placeholder="Enter email"/>
+            <input type="password" id="password" placeholder="Enter password"/>
+            <button onclick="login()">Login</button>
+        </div>
+        <div id="error" style="color: red; margin-top: 5px;"></div>
+    </body>
+</html>

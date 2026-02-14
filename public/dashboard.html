@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>dashboard</title>
+    </head>
+    <script>
+        const loadDashboard = async () => {
+            const token = localStorage.getItem("token");
+
+            const res = await fetch("http://localhost:5000/dashboard", {
+                method: "GET",
+                headers: { "Content-Type": "application/json", Authorization: token },
+            })
+
+            const result = await res.json();
+            let message = "";
+            if(result.success){
+                message = "Welcome to Dashboard";
+            } else {
+                message = "Unauthorized";
+            }
+            document.getElementById("server-message").innerText = message;
+        }
+
+        loadDashboard();
+
+        const signout = async () => {
+            await localStorage.setItem("token", null);
+            window.location.href = "index.html";
+        }
+    </script>
+    <body>
+        <h2>Dashboard Page</h2>
+        <!-- <button onclick="signout()">Sign out</button> -->
+        <div id="server-message"></div>
+    </body>
+</html>
